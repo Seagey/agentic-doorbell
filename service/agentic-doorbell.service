@@ -1,0 +1,21 @@
+# Keeps agentic-doorbell running on Linux (a Raspberry Pi 4 or 5 works), and starts it again after a
+# restart or a crash.
+#   1. Replace FOLDER with the full path to this folder, and USER with your user name. If you
+#      installed Node with nvm, put the full path to node (which node) in place of /usr/bin/env node.
+#   2. sudo cp service/agentic-doorbell.service /etc/systemd/system/
+#   3. sudo systemctl enable --now agentic-doorbell
+#   Its log: journalctl -u agentic-doorbell -f
+[Unit]
+Description=agentic-doorbell
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=USER
+WorkingDirectory=FOLDER
+ExecStart=/usr/bin/env node greeter.mjs
+Restart=always
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target

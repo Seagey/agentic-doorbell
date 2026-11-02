@@ -1,0 +1,6 @@
+{
+  "_help": "One greeting per person. Each name must match a folder in data/faces/ exactly. _stranger plays for anyone it does not know. Then run: node voice.mjs",
+  "Sam": "Sam! You made it. Be right with you.",
+  "Alex": "Alex, hello again. We'll be right there.",
+  "_stranger": "Hello, thanks for coming. One moment please. Deliveries can go by the door."
+}

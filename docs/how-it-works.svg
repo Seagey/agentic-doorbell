@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 640" width="760" height="640" role="img" aria-label="How it works: someone presses the doorbell, a live call opens, your computer checks the face, picks that person's greeting, and plays it through the doorbell speaker">
+  <style>
+    .t { font: 700 23px -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; fill: #111317; }
+    .s { font: 400 17px -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; fill: #4a4f57; }
+    .n { font: 700 22px -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; fill: #ffffff; }
+    .tag { font: 700 14px -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; fill: #0b7d92; letter-spacing: 1.5px; }
+  </style>
+  <rect x="0" y="0" width="760" height="640" rx="22" fill="#ffffff"/>
+  <rect x="0.5" y="0.5" width="759" height="639" rx="22" fill="none" stroke="#dfe3e8"/>
+
+  <!-- your computer zone -->
+  <rect x="24" y="262" width="712" height="236" rx="18" fill="#e9f8fb" stroke="#10c0df" stroke-width="2" stroke-dasharray="7 6"/>
+  <text x="112" y="294" class="tag">ON YOUR COMPUTER AT HOME · NOTHING LEAVES IT</text>
+
+  <g>
+    <circle cx="70" cy="66" r="24" fill="#111317"/><text x="70" y="74" text-anchor="middle" class="n">1</text>
+    <text x="112" y="60" class="t">Someone presses the doorbell</text>
+    <text x="112" y="86" class="s">Ring sends a push to your computer straight away.</text>
+  </g>
+  <path d="M70 96 V132" stroke="#9aa1aa" stroke-width="3" marker-end="url(#a)"/>
+
+  <g>
+    <circle cx="70" cy="170" r="24" fill="#111317"/><text x="70" y="178" text-anchor="middle" class="n">2</text>
+    <text x="112" y="164" class="t">A live call opens</text>
+    <text x="112" y="190" class="s">The same Live View you see in the Ring app. The speaker</text>
+    <text x="112" y="212" class="s">is switched on now so it is warm when the greeting starts.</text>
+  </g>
+  <path d="M70 200 V300" stroke="#9aa1aa" stroke-width="3" marker-end="url(#a)"/>
+
+  <g>
+    <circle cx="70" cy="340" r="24" fill="#10c0df"/><text x="70" y="348" text-anchor="middle" class="n">3</text>
+    <text x="112" y="334" class="t">Face check</text>
+    <text x="112" y="360" class="s">Two frames a second from the call, compared with your</text>
+    <text x="112" y="382" class="s">photos. Each frame is deleted once it is checked.</text>
+  </g>
+  <path d="M70 370 V406" stroke="#9aa1aa" stroke-width="3" marker-end="url(#a)"/>
+
+  <g>
+    <circle cx="70" cy="444" r="24" fill="#10c0df"/><text x="70" y="452" text-anchor="middle" class="n">4</text>
+    <text x="112" y="438" class="t">Picks that person's greeting</text>
+    <text x="112" y="464" class="s">Their own line, or a polite one for anyone it doesn't know.</text>
+  </g>
+  <path d="M70 474 V540" stroke="#9aa1aa" stroke-width="3" marker-end="url(#a)"/>
+
+  <g>
+    <circle cx="70" cy="578" r="24" fill="#111317"/><text x="70" y="586" text-anchor="middle" class="n">5</text>
+    <text x="112" y="572" class="t">Plays through the doorbell's speaker</text>
+    <text x="112" y="598" class="s">Checked as it goes, and said again if any of it was lost.</text>
+  </g>
+
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M1 1 L9 5 L1 9" fill="none" stroke="#9aa1aa" stroke-width="2"/>
+    </marker>
+  </defs>
+</svg>

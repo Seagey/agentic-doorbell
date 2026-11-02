@@ -1,0 +1,9 @@
+# Face matching, on your own computer. ./setup.sh installs these, then face_recognition itself
+# (with --no-deps, so pip does not try to build dlib from source).
+dlib-bin==20.0.1.post1
+face_recognition_models==0.3.0
+click>=6.0
+numpy
+pillow
+# face_recognition_models finds its model files through pkg_resources, which newer setuptools drops
+setuptools<81

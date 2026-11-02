@@ -1,0 +1,14 @@
+{
+  "_help": "Copy this file to config.json (setup.sh does it for you) and change what you need. README 'Settings' explains each one.",
+  "camera": "Front Door",
+  "threshold": 0.5,
+  "lookOnPressSeconds": 10,
+  "lookOnMotionSeconds": 15,
+  "motion": true,
+  "speakerWarmUpSeconds": 3.5,
+  "filmPeople": [],
+  "elevenlabs": { "voice": "", "speed": 0.7 },
+  "python": ".venv/bin/python",
+  "ffmpeg": "ffmpeg",
+  "ffprobe": "ffprobe"
+}

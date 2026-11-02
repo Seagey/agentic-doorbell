@@ -1,0 +1,23 @@
+{
+  "name": "agentic-doorbell",
+  "version": "1.0.0",
+  "description": "Your Ring doorbell greets the people you know, by name, in a voice you choose. Face matching runs on your own computer.",
+  "type": "module",
+  "license": "MIT",
+  "repository": { "type": "git", "url": "https://github.com/Seagey/agentic-doorbell.git" },
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "start": "node greeter.mjs",
+    "check": "node check.mjs",
+    "login": "node login.mjs",
+    "voices": "node voice.mjs"
+  },
+  "dependencies": {
+    "ring-client-api": "14.3.0",
+    "rxjs": "^7.8.2",
+    "werift": "0.22.4"
+  },
+  "overrides": {
+    "@eneris/push-receiver": "4.4.0"
+  }
+}

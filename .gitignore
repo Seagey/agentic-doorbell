@@ -1,0 +1,13 @@
+# Your own data: Ring sign-in, face photos and index, greetings, recordings. Never commit these.
+data/
+film/
+config.json
+lines.json
+.env
+*token*.json
+*.log
+# Installed by setup.sh
+node_modules/
+.venv/
+__pycache__/
+.DS_Store
