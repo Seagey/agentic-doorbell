@@ -25,7 +25,7 @@ of your choosing instead.
 
 | Face found on the live view | Checked against your photos | A match |
 |---|---|---|
-| <img src="docs/face-found.jpg" width="250" alt="The doorbell's live view with a box round the face"> | <img src="docs/face-check.jpg" width="250" alt="The face compared with reference photos, distance 0.483"> | <img src="docs/match.jpg" width="250" alt="The match card: known face, match 0.483"> |
+| <img src="docs/face-found.jpg" width="250" alt="The doorbell's live view with a box round the face"> | <img src="docs/face-check.jpg" width="250" alt="The face compared with reference photos one at a time, each with a distance score"> | <img src="docs/match.jpg" width="250" alt="The match: a known face, distance 0.483"> |
 
 Motion helps too: when someone walks up, it already starts looking, so when they press the button
 it often knows who they are and can answer as soon as the doorbell is awake. Motion never talks on
