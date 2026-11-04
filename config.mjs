@@ -22,6 +22,7 @@ const DEFAULTS = {
   lookOnMotionSeconds: 15,
   motion: true,
   speakerWarmUpSeconds: 3.5,
+  eufyStereo: false,
   filmPeople: [],
   elevenlabs: { voice: '', speed: 0.7 },
   python: '.venv/bin/python',

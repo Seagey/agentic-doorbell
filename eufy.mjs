@@ -102,8 +102,9 @@ function film(l, force = false) {
 }
 
 // ---- the greeting -------------------------------------------------------------------------
-// Talkback takes AAC in ADTS frames, one frame per write. The greeting is rendered to mono 16 kHz
-// AAC first (with the same quiet lead-in and tail as the Ring part), then each frame is written at
+// Talkback takes AAC in ADTS frames, one frame per write (format and the 20 kbps from thieren, who
+// wrote the library's talkback: higher rates stuttered; one T8200 only played clean in stereo, hence
+// eufyStereo). The greeting is rendered to 16 kHz AAC first (with the same quiet lead-in and tail as the Ring part), then each frame is written at
 // real-time pace (1024 samples, 64 ms) so the doorbell never gets a burst. Returns { ok, why }.
 async function speak(file, rec = null) {
   const [stream] = await waitFor('station talkback start', 15000, () => eufy.startStationTalkback(SN));
@@ -116,7 +117,7 @@ async function speak(file, rec = null) {
       '-f', 'lavfi', '-i', 'anoisesrc=d=1.2:c=pink:r=16000:a=0.002', '-i', file, '-filter_complex',
       '[0]aformat=sample_rates=16000:channel_layouts=mono[n];[1]aresample=16000,aformat=sample_rates=16000:channel_layouts=mono[v];' +
       '[n][v]concat=n=2:v=0:a=1,apad=pad_dur=1.5',
-      '-acodec', 'aac', '-profile:a', 'aac_low', '-ar', '16000', '-ac', '1', '-b:a', '24k', '-f', 'adts', ready]);
+      '-acodec', 'aac', '-profile:a', 'aac_low', '-ar', '16000', '-ac', cfg.eufyStereo ? '2' : '1', '-b:a', '20k', '-f', 'adts', ready]);
     const frames = adtsFrames(fs.readFileSync(ready));
     const length = await seconds(ready);
     if (rec) { rec.line = file; rec.lineAt = Date.now() + 1200; }

@@ -78,6 +78,12 @@ it yet. If you try it, please open an issue saying how it went.
 the wired 2K (T8200X), the battery 2K (T8210, usually with a HomeBase), the E340 (T8214) and the
 C30, C31, C33 and E330. Talkback is the part most likely to differ between models.
 
+**Why this library.** Its README now points to a newer project,
+[eufy-sdk](https://github.com/mega-yfue/eufy-sdk). We stayed with eufy-security-client for now: it
+is the one the Homebridge and Home Assistant plugins have used for years, while eufy-sdk is a few
+months old, has a different API and does not yet say which doorbells it supports. If it matures,
+moving over is a small change in `eufy.mjs` and `eufy-client.mjs`.
+
 **What's different from Ring:**
 
 - **A second Eufy account.** In the Eufy app, share the doorbell with a second email address you
@@ -89,9 +95,10 @@ C30, C31, C33 and E330. Talkback is the part most likely to differ between model
 - **Node 24 or newer.** The Eufy library needs it (Ring needs 22).
 - **It can be slower.** Eufy live views can take several seconds to start, more on battery
   doorbells. Motion opens the live view early, so a press a moment later can answer sooner.
-- **The greeting's sound** goes out as AAC, mono, 16 kHz, one frame every 64 ms. A community project
-  found that format works on a battery 2K doorbell; Eufy does not document it. If yours plays it
-  wrongly, open an issue with your model.
+- **The greeting's sound** goes out as AAC, mono, 16 kHz, 20 kbps, one frame every 64 ms. That is
+  the format thieren found when adding talkback to the library, tested on a battery 2K doorbell.
+  Eufy does not document it. If the greeting stutters, set `"eufyStereo": true` (one wired
+  doorbell only played cleanly in stereo), and open an issue with your model.
 - **Film mode** keeps the video only, not the doorbell's sound.
 
 **Set it up.** Do the normal steps, with these two changes:
@@ -374,6 +381,7 @@ All in `config.json`. Leave out anything you don't want to change.
 | Setting | Default | What it does |
 |---|---|---|
 | `brand` | `"ring"` | `"ring"` or `"eufy"`. See [Eufy](#eufy-new-not-tested-yet). |
+| `eufyStereo` | `false` | Eufy only: send the greeting in stereo. Try it if the greeting stutters. |
 | `camera` | `"Front Door"` | Your doorbell's name in the Ring (or Eufy) app. If no camera has this name, it uses the first doorbell. |
 | `threshold` | `0.5` | How close a face must be to count as a match. Lower is stricter. The face library's own default is 0.6; 0.5 suits a fisheye doorbell. |
 | `lookOnPressSeconds` | `10` | How long it keeps looking for a known face after a press, before it plays the stranger greeting. |
@@ -448,7 +456,9 @@ example `check.mjs` while the service ran). Run `node login.mjs` again, then sta
 ## Credits
 
 Built on [ring-client-api](https://github.com/dgreif/ring) by Dusty Greif,
-[eufy-security-client](https://github.com/bropat/eufy-security-client) by bropat and others, and
+[eufy-security-client](https://github.com/bropat/eufy-security-client) by bropat and others (its
+two-way talk was added by [thieren](https://github.com/thieren), whose notes set the greeting's
+sound format), and
 [face_recognition](https://github.com/ageitgey/face_recognition) by Adam Geitgey (both MIT), which
 uses [dlib](http://dlib.net). Not made by or connected with Ring, Amazon or Eufy. MIT licence: see
 [LICENSE](LICENSE).
