@@ -7,7 +7,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
-import { HERE, FACES, LINES, loadConfig, readToken, saveToken } from './config.mjs';
+import { HERE, FACES, LINES, loadConfig, readToken, saveToken, readEufyLogin } from './config.mjs';
 
 const run = promisify(execFile);
 const offline = process.argv.includes('--offline');
@@ -30,7 +30,7 @@ try {
 } catch { fix(`ffmpeg not found ("${cfg.ffmpeg}"): brew install ffmpeg (Mac) or sudo apt install ffmpeg (Linux)`); }
 try { await run(cfg.ffprobe, ['-version']); ok('ffprobe'); } catch { fix('ffprobe not found (it comes with ffmpeg)'); }
 
-if (!fs.existsSync(path.join(HERE, 'node_modules', 'ring-client-api'))) fix('Node packages missing: run ./setup.sh (or npm install)');
+if (!fs.existsSync(path.join(HERE, 'node_modules', cfg.brand === 'eufy' ? 'eufy-security-client' : 'ring-client-api'))) fix('Node packages missing: run ./setup.sh (or npm install)');
 else ok('Node packages installed');
 
 if (!fs.existsSync(cfg.python)) fix('No Python for face matching: run ./setup.sh');
@@ -65,6 +65,28 @@ const hasSound = (name) => fs.existsSync(path.join(LINES, name)) &&
   fs.readdirSync(path.join(LINES, name)).some((f) => /\.(mp3|wav|m4a)$/i.test(f));
 for (const p of people) hasSound(p) ? ok(`${p} has a greeting`) : note(`${p} has no greeting yet, so gets the stranger one (README step 6)`);
 hasSound('_stranger') ? ok('Stranger greeting') : fix('No stranger greeting: add "_stranger" to lines.json and run node voice.mjs');
+
+if (cfg.brand === 'eufy') {
+  console.log('Eufy');
+  major >= 24 ? ok('Node 24 or newer (the Eufy library needs it)') : fix(`Node ${process.versions.node}: the Eufy library needs Node 24 or newer`);
+  const eufyLogin = readEufyLogin();
+  if (!eufyLogin) fix('Not signed in to Eufy: run node eufy-login.mjs (README "Eufy")');
+  else if (offline) note('Signed in (not checked: --offline)');
+  else {
+    const { createEufy, attempt, findDoorbell } = await import('./eufy-client.mjs');
+    const eufy = await createEufy(eufyLogin);
+    const r = await attempt(eufy);
+    if (!r.ok) fix(r.error ? `Eufy said: ${r.error}` : 'Eufy wants a code or picture check: run node eufy-login.mjs again');
+    else {
+      const { bell, devices } = await findDoorbell(eufy, cfg.camera, 30000);
+      for (const d of devices) console.log(`  ${d === bell ? 'ok  ' : '    '} ${d.getName()} | ${d.getModel()} | doorbell ${d.isDoorbell() ? 'yes' : 'no'}${d === bell ? '  <- the one it will use' : ''}`);
+      if (!bell) fix('No Eufy doorbell on this account: share it from your main account with admin rights');
+    }
+    eufy.close();
+  }
+  console.log(fixes ? `\n${fixes} thing(s) to fix.` : '\nAll good.');
+  process.exit(fixes ? 1 : 0);
+}
 
 console.log('Ring');
 const token = readToken();

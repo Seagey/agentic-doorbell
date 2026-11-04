@@ -11,8 +11,11 @@ export const FACES = path.join(DATA, 'faces');               // faces/<name>/*.j
 export const LINES = path.join(DATA, 'lines');               // lines/<name>/*.mp3|wav|m4a
 export const FILM = path.join(HERE, 'film');                 // film mode recordings
 export const FILM_FLAG = path.join(DATA, 'film-mode');
+export const EUFY_LOGIN = path.join(DATA, 'eufy-login.json');  // Eufy only: email, password, country
+export const EUFY_STATE = path.join(DATA, 'eufy');              // Eufy only: the library's saved sign-in
 
 const DEFAULTS = {
+  brand: 'ring',
   camera: 'Front Door',
   threshold: 0.5,
   lookOnPressSeconds: 10,
@@ -49,4 +52,16 @@ export function readToken() {
 export function saveToken(refreshToken) {
   fs.mkdirSync(DATA, { recursive: true, mode: 0o700 });
   fs.writeFileSync(TOKEN, JSON.stringify({ refreshToken, at: new Date().toISOString() }), { mode: 0o600 });
+}
+
+// Eufy has no refresh token: its library signs in with the email and password every time it starts.
+// So they are kept in data/eufy-login.json, readable by you only. Use a second Eufy account the
+// doorbell is shared with (README "Eufy"), so this password is not the one for your main account.
+export function readEufyLogin() {
+  if (!fs.existsSync(EUFY_LOGIN)) return null;
+  return JSON.parse(fs.readFileSync(EUFY_LOGIN, 'utf8'));
+}
+export function saveEufyLogin(login) {
+  fs.mkdirSync(DATA, { recursive: true, mode: 0o700 });
+  fs.writeFileSync(EUFY_LOGIN, JSON.stringify(login), { mode: 0o600 });
 }

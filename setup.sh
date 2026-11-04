@@ -39,3 +39,4 @@ echo "4/4  Check"
 node check.mjs --offline || true
 echo
 echo "Installed. Next: README step 3, sign in to Ring with: node login.mjs"
+echo "(Eufy doorbell? Set \"brand\": \"eufy\" in config.json and run: node eufy-login.mjs)"

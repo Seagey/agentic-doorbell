@@ -1,5 +1,6 @@
 {
   "_help": "Copy this file to config.json (setup.sh does it for you) and change what you need. README 'Settings' explains each one.",
+  "brand": "ring",
   "camera": "Front Door",
   "threshold": 0.5,
   "lookOnPressSeconds": 10,

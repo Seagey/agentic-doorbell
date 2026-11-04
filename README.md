@@ -3,6 +3,9 @@
 Your Ring doorbell greets the people you know, by name, in a voice you choose. The face check runs
 on your own computer, so nobody's face goes to the cloud. Open source (MIT). Built with Claude.
 
+**New: Eufy.** Eufy video doorbells now have their own option too. It is built but not yet tested on
+a real Eufy doorbell, so read [Eufy](#eufy-new-not-tested-yet) first.
+
 ![Pressing the doorbell, the face found on the live view, the face check, and the match](docs/hero.jpg)
 
 Someone presses the doorbell. A moment later the doorbell's own speaker says something just for
@@ -41,7 +44,8 @@ called when someone is at the door: the greetings are made ahead of time and kep
 |---|---|
 | **Tested** | **Ring Video Doorbell (2nd Gen)**, the battery one. Ring's device type for it is `cocoa_doorbell`. Tested in November 2026. |
 | **Should work, not tested** | Other Ring video doorbells that have Live View and two-way talk in the Ring app, wired or battery. For example: Battery Doorbell Plus and Pro, Video Doorbell 3, 3 Plus and 4, Doorbell Wired, Doorbell Pro and Pro 2, Doorbell Elite. |
-| **Won't work** | Nest, Arlo, Eufy, Google, Aqara or any other brand. Ring security cameras (no button to press). Any Ring doorbell with **End-to-End Encryption** switched on in the Ring app: Live View from outside the Ring app is not possible then. |
+| **Built, not tested yet** | **Eufy** video doorbells with two-way talk. See [Eufy](#eufy-new-not-tested-yet). |
+| **Won't work** | Nest, Arlo, Google, Aqara or any other brand. Ring security cameras (no button to press). Any Ring doorbell with **End-to-End Encryption** switched on in the Ring app: Live View from outside the Ring app is not possible then. |
 
 Why "should work": this is built on [ring-client-api](https://github.com/dgreif/ring), the
 unofficial Ring library behind the popular Homebridge Ring plugin. It knows every Ring doorbell
@@ -58,6 +62,51 @@ Ring's side could stop it working until the library catches up.
 
 If you run it on another Ring doorbell, please open an issue saying how it went, and we'll add it
 to the table.
+
+## Eufy (new, not tested yet)
+
+Eufy doorbells work the same way: a press opens the live view, your computer checks the face, and
+the greeting plays through the doorbell's own speaker (Eufy calls it talkback). It is built on
+[eufy-security-client](https://github.com/bropat/eufy-security-client), the free library made by
+the community that the Homebridge and Home Assistant Eufy plugins use. Not made by Eufy.
+
+**To be straight about it:** this part was written against that library's code and tested against
+a stand-in doorbell, not a real one. Nobody has heard a greeting come out of a Eufy doorbell with
+it yet. If you try it, please open an issue saying how it went.
+
+**Which Eufy doorbells.** The library's change notes name the Video Doorbell Dual (T8213, T8203),
+the wired 2K (T8200X), the battery 2K (T8210, usually with a HomeBase), the E340 (T8214) and the
+C30, C31, C33 and E330. Talkback is the part most likely to differ between models.
+
+**What's different from Ring:**
+
+- **A second Eufy account.** In the Eufy app, share the doorbell with a second email address you
+  own and give it admin rights. Sign in here with that account. Signing in with your main account
+  can log your phone out of the Eufy app.
+- **The password is saved.** Eufy's library needs the password every time it starts, so it is kept
+  in `data/eufy-login.json`, readable by your user only. That is why it should be the second
+  account, not your main one.
+- **Node 24 or newer.** The Eufy library needs it (Ring needs 22).
+- **It can be slower.** Eufy live views can take several seconds to start, more on battery
+  doorbells. Motion opens the live view early, so a press a moment later can answer sooner.
+- **The greeting's sound** goes out as AAC, mono, 16 kHz, one frame every 64 ms. A community project
+  found that format works on a battery 2K doorbell; Eufy does not document it. If yours plays it
+  wrongly, open an issue with your model.
+- **Film mode** keeps the video only, not the doorbell's sound.
+
+**Set it up.** Do the normal steps, with these two changes:
+
+1. In `config.json`, set `"brand": "eufy"` and put your doorbell's name from the Eufy app in
+   `"camera"`.
+2. In step 3, sign in with this instead of `node login.mjs`:
+
+```bash
+node eufy-login.mjs
+```
+
+Type the second account's email, password and country. Eufy may email a code or show a picture
+check: type it in the page. Then run `node check.mjs` and you should see your doorbell under
+**Eufy**. Everything else (people, greetings, `--test`, keeping it running) is the same.
 
 ## Setting it up with an AI agent
 
@@ -324,7 +373,8 @@ All in `config.json`. Leave out anything you don't want to change.
 
 | Setting | Default | What it does |
 |---|---|---|
-| `camera` | `"Front Door"` | Your doorbell's name in the Ring app. If no camera has this name, it uses the first doorbell. |
+| `brand` | `"ring"` | `"ring"` or `"eufy"`. See [Eufy](#eufy-new-not-tested-yet). |
+| `camera` | `"Front Door"` | Your doorbell's name in the Ring (or Eufy) app. If no camera has this name, it uses the first doorbell. |
 | `threshold` | `0.5` | How close a face must be to count as a match. Lower is stricter. The face library's own default is 0.6; 0.5 suits a fisheye doorbell. |
 | `lookOnPressSeconds` | `10` | How long it keeps looking for a known face after a press, before it plays the stranger greeting. |
 | `lookOnMotionSeconds` | `15` | How long it looks when someone walks up. |
@@ -397,7 +447,8 @@ example `check.mjs` while the service ran). Run `node login.mjs` again, then sta
 
 ## Credits
 
-Built on [ring-client-api](https://github.com/dgreif/ring) by Dusty Greif and
+Built on [ring-client-api](https://github.com/dgreif/ring) by Dusty Greif,
+[eufy-security-client](https://github.com/bropat/eufy-security-client) by bropat and others, and
 [face_recognition](https://github.com/ageitgey/face_recognition) by Adam Geitgey (both MIT), which
-uses [dlib](http://dlib.net). Not made by or connected with Ring or Amazon. MIT licence: see
+uses [dlib](http://dlib.net). Not made by or connected with Ring, Amazon or Eufy. MIT licence: see
 [LICENSE](LICENSE).

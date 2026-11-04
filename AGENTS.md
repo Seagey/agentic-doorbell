@@ -8,7 +8,8 @@ README steps in order, run each command yourself, and tell the owner what you sa
 1. **Check the basics.** Which computer will run it (it must stay on at home)? Which Ring doorbell
    do they have? Compare it with README "What doorbells it works with" and say plainly if theirs is
    tested, untested, or won't work (any other brand, a Ring camera with no button, or End-to-End
-   Encryption on). Intel Mac: make the `requirements.txt` swap the README describes before setup.
+   Encryption on). A Eufy doorbell: follow README "Eufy" and tell them plainly it is built but not
+   yet tested on a real Eufy, so they are the first. Intel Mac: make the `requirements.txt` swap the README describes before setup.
 2. **Install.** Run `./setup.sh` and fix anything it stops on (missing Node, Python or ffmpeg).
 3. **Ring sign-in.** Run `node login.mjs` (or `--lan` for their phone) and hand them the link.
    They type their own email, password and code. Then run `node check.mjs` and set `"camera"` in
@@ -33,6 +34,8 @@ time, and film mode records everyone while it is on.
 
 - **Signing in to Ring.** Never type, read or store their Ring password or code. Never read or print
   `data/ring-token.json`.
+- **Signing in to Eufy.** They type it into `node eufy-login.mjs` themselves. Never read or print
+  `data/eufy-login.json` or anything in `data/eufy/`.
 - **Adding a face.** Only people the owner names and says have agreed. Never pull photos from social
   media or anywhere online.
 - **Spending money.** ElevenLabs characters come out of their plan: say how many first.
@@ -59,6 +62,11 @@ time, and film mode records everyone while it is on.
   is not someone at the door now.
 - **Faces stay local.** `match.py` deletes every frame it checks. Never add an upload, a cloud face
   service or a model call at ring time.
+
+- **Eufy (eufy.mjs).** Import the library as a default import (`import eufyLib from
+  'eufy-security-client'`): it is CommonJS and some named imports do not resolve. Talkback takes one
+  AAC ADTS frame per write, paced in real time. The live view is shared by motion and the press,
+  because opening a second one is slow.
 
 ## Checking your work
 
